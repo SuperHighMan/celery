@@ -36,10 +36,11 @@ if __name__ == '__main__':
     print(r.get(timeout=15))
     '''
     #async_fun()
-    t1 = taskA.delay(2, 3)
-    print(t1)
-    time.sleep(20)
-    print(t1.status)
+    for i in range(1,10):
+        t1 = taskA.delay(2, 3)
+        i = i + 1
+
+    #print
 
 
 

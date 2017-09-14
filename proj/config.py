@@ -3,9 +3,14 @@
 
 from __future__ import absolute_import
 from kombu import Exchange,Queue
+from celery.schedules import crontab
 
+# 结果存放 Backend
 CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
+# Broker设置
 BROKER_URL = 'redis://127.0.0.1:6379/1'
+#时区设置
+CELERY_TIMEZONE = 'Asia/Shanghai'
 
 CELERY_QUEUES = (
     Queue("default", Exchange("default"), routing_key="default"),
@@ -18,4 +23,13 @@ CELERY_ROUTES = {
     'proj.tasks.taskB':{"queue":"for_task_B", "routing_key":"task_b"}
 }
 
+# 计划任务配置
+CELERYBEAT_SCHEDULE = {
+    # 每分钟执行一次taskA任务
+    'taskA-every-minute': {
+        'task': 'proj.tasks.taskA',
+        'schedule': crontab(minute='*/60'),
+        'args': (3, 19)
+    }
+}
 

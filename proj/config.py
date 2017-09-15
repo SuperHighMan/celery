@@ -4,6 +4,7 @@
 from __future__ import absolute_import
 from kombu import Exchange,Queue
 from celery.schedules import crontab
+from datetime import timedelta
 
 # 结果存放 Backend
 CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
@@ -28,7 +29,8 @@ CELERYBEAT_SCHEDULE = {
     # 每分钟执行一次taskA任务
     'taskA-every-minute': {
         'task': 'proj.tasks.taskA',
-        'schedule': crontab(minute='*/60'),
+        'schedule': crontab(minute='*/1'),
+        #'schedule': timedelta(seconds=60),
         'args': (3, 19)
     }
 }

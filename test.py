@@ -37,7 +37,7 @@ if __name__ == '__main__':
     '''
     #async_fun()
     for i in range(1,10):
-        t1 = taskA.delay(2, 3)
+        t1 = power.delay(2)
         i = i + 1
 
     #print

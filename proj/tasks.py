@@ -17,5 +17,5 @@ def taskB(x, y, z):
 
 @app.task(expires=10)
 def power(x):
-    time.sleep(3)
+    time.sleep(30)
     return x * x

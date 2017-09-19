@@ -4,6 +4,7 @@
 from __future__ import absolute_import
 from proj.celery import app
 import time
+import os
 
 @app.task
 def taskA(x, y):
@@ -19,3 +20,9 @@ def taskB(x, y, z):
 def power(x):
     time.sleep(30)
     return x * x
+
+@app.task
+def ssh_command(ip, cmd):
+    c = "ssh " + ip + " " + cmd
+    out = os.popen(c)
+    return out.readlines()

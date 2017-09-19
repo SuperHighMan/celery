@@ -7,7 +7,7 @@ import time
 import datetime
 
 from celery.exceptions import TimeoutError
-
+from proj.async import AsyncCheck
 Result_ID = []
 
 def async_fun():
@@ -28,19 +28,23 @@ def async_fun():
 
 if __name__ == '__main__':
     # Return AsyncResult
-    '''
-    r = add.delay(100, 10)
-
-    print(r.status)
-    print(r.id)
-    print(r.get(timeout=15))
-    '''
     #async_fun()
-    for i in range(1,10):
-        t1 = power.delay(2)
-        i = i + 1
-
     #print
+
+    args = [['192.168.92.133'], 'uptime']
+    begin = datetime.datetime.now()
+    check = AsyncCheck(args=args, interval=3, times=2)
+    check.run()
+    print(check.timeout_result())
+    end = datetime.datetime.now()
+    print(end - begin)
+
+    begin = datetime.datetime.now()
+    check = AsyncCheck(args=args)
+    check.run()
+    print(check.timeout_result())
+    end = datetime.datetime.now()
+    print(end - begin)
 
 
 

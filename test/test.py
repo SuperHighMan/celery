@@ -46,5 +46,12 @@ if __name__ == '__main__':
     end = datetime.datetime.now()
     print(end - begin)
 
+    begin = datetime.datetime.now()
+    check = AsyncCheck(args=args)
+    check.run_by_queue()
+    print(check.timeout_result())
+    end = datetime.datetime.now()
+    print(end - begin)
+
 
 

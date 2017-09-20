@@ -8,7 +8,7 @@ import os
 
 @app.task
 def taskA(x, y):
-    time.sleep(10)
+    time.sleep(30)
     return x + y
 
 @app.task
@@ -16,9 +16,9 @@ def taskB(x, y, z):
     time.sleep(5)
     return x * y + z
 
-@app.task(expires=10)
+@app.task
 def power(x):
-    time.sleep(30)
+    time.sleep(2)
     return x * x
 
 @app.task

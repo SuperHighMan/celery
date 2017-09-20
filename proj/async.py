@@ -2,9 +2,9 @@
 # -*- coding:utf-8 -*-
 
 from __future__ import absolute_import
-from proj.tasks import ssh_command
+from proj.tasks import ssh_command, taskA
 import time
-import datetime
+from datetime import datetime, timedelta
 from celery.exceptions import TimeoutError
 
 class AsyncCheck:
@@ -29,8 +29,22 @@ class AsyncCheck:
     def run(self):
         for ip in self.__iplist:
             ip = ip.rstrip()
-            task = ssh_command.apply_async((ip, self.__str) )
+            task = ssh_command.apply_async(args = [ip, self.__str] )
             self.__result.append(task)
+
+        for times in range(0, self.__times):
+            time.sleep(self.__interval)
+            for tmp in self.__result:
+                if tmp.status == 'SUCCESS':
+                    self.__result.remove(tmp)
+                    print(tmp.get())
+            if len(self.__result) == 0:
+                break
+
+    def run_by_queue(self):
+            #task = ssh_command.apply_async(args = [ip, self.__str] )
+        task = taskA.apply_async(args = [4, 8], queue='celery', expires=datetime.utcnow()+timedelta(seconds=1) )
+        self.__result.append(task)
 
         for times in range(0, self.__times):
             time.sleep(self.__interval)

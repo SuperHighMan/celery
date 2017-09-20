@@ -4,21 +4,75 @@ A First celery project
 
 一、环境要求
 -----------------------------------
-本程序基于Python3开发，推荐>=Python3.5，依赖Celery 4.1
+本程序基于Python3开发，推荐>=Python3.5，依赖Celery  4.1
 异步任务基于[Celery模块](http://docs.celeryproject.org/en/latest/)<br />
+消息中间键使用了redis，推荐使用epel的源进行安装
+```
+pip3 install celery -i https://pypi.douban.com/simple #推荐使用豆瓣的镜像
+yum install redis
+```
+epel阿里云源
+```
+[epel]
+name=Extra Packages for Enterprise Linux 6 - $basearch
+baseurl=http://mirrors.aliyun.com/epel/6/$basearch
+        http://mirrors.aliyuncs.com/epel/6/$basearch
+#mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch
+failovermethod=priority
+enabled=1
+gpgcheck=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+ 
+[epel-debuginfo]
+name=Extra Packages for Enterprise Linux 6 - $basearch - Debug
+baseurl=http://mirrors.aliyun.com/epel/6/$basearch/debug
+        http://mirrors.aliyuncs.com/epel/6/$basearch/debug
+#mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-6&arch=$basearch
+failovermethod=priority
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+gpgcheck=0
+ 
+[epel-source]
+name=Extra Packages for Enterprise Linux 6 - $basearch - Source
+baseurl=http://mirrors.aliyun.com/epel/6/SRPMS
+        http://mirrors.aliyuncs.com/epel/6/SRPMS
+#mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-source-6&arch=$basearch
+failovermethod=priority
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+gpgcheck=0
+```
 
 二、安装
 -----------------------------------
 ```
 yum install git
 git clone https://github.com/SuperHighMan/celery.git
+cd celery
 python3 setup.py install
 ```
 
 三、开始使用
 -----------------------------------
-启动后台worker
+1.redis启动
 ```
+#远程连接需要配置/etc/redis.conf文件
+#bind 127.0.0.1
+protected-mode no
+此配置仅使用于测试，存在安全风险
+
+#启动redis服务
+service redis start
+
+#客户端调用
+$redis-cli
+127.0.0.1:6379> 
+```
+
+2.celery启动后台worker
+```
+ln -s /usr/local/python3/bin/celery /usr/bin/celery
 celery -A proj worker -l info -n worker.%h -Q celery
 ```
 四、开发实例

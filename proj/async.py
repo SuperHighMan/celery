@@ -2,10 +2,12 @@
 # -*- coding:utf-8 -*-
 
 from __future__ import absolute_import
-from proj.tasks import ssh_command, taskA
+
 import time
 from datetime import datetime, timedelta
-from celery.exceptions import TimeoutError
+
+from proj.easy.tasks import ssh_command, taskA
+
 
 class AsyncCheck:
     # args [["10.10.10.10", "10.10.10.11"],

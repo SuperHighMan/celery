@@ -1,3 +1,12 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @File  : kthread.py
+# @Author: Hui
+# @Date  : 2017/9/20
+# @Desc  :
+
+# This is an example file. Maybe you should first install this project first
+
 from proj.async import AsyncCheck
 import datetime
 

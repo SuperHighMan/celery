@@ -20,15 +20,15 @@ CELERY_QUEUES = (
 )
 
 CELERY_ROUTES = {
-    'proj.tasks.taskA':{"queue":"for_task_A", "routing_key":"task_a"},
-    'proj.tasks.taskB':{"queue":"for_task_B", "routing_key":"task_b"}
+    'proj.easy.tasks.taskA':{"queue":"for_task_A", "routing_key":"task_a"},
+    'proj.easy.tasks.taskB':{"queue":"for_task_B", "routing_key":"task_b"}
 }
 
 # 计划任务配置
 CELERYBEAT_SCHEDULE = {
     # 每分钟执行一次taskA任务
     'taskA-every-minute': {
-        'task': 'proj.tasks.taskA',
+        'task': 'proj.easy.tasks.taskA',
         'schedule': crontab(minute='*/1'),
         #'schedule': timedelta(seconds=60),
         'args': (3, 19)

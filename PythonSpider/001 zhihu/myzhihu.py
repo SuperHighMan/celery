@@ -129,6 +129,14 @@ def login(account, password):
     r = session.get("https://www.zhihu.com/settings/profile", headers=headers, allow_redirects=False)
     print(r.status_code)
 
+#判断是否已经登录
+def isLogin():
+    r = session.get("https://www.zhihu.com/settings/profile", headers=headers, allow_redirects=False)
+    if r.status_code == 200:
+        return True
+    else:
+        return False
+
 #倒立汉字登陆
 def login_new(account, password):
     _xsrf = get_xsrf()
@@ -149,20 +157,17 @@ def login_new(account, password):
     headers['Referer'] = 'https://www.zhihu.com/'
     headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
     response = session.post(email_url, data=data, headers=headers)
-    print(response)
-    print('hhh')
-    print(response.text)
+    #print(response.text)
     login_code = response.json()
     print(login_code)
-    print(session.cookies)
-    r = session.get("https://www.zhihu.com/settings/profile", headers=headers, allow_redirects=False)
-    print(r.status_code)
+    #保存cookies文件，下次直接自动登录
+    session.cookies.save()
 
 
 if __name__ == '__main__':
-    account = input('请输入你的邮箱\n>  ')
-    password = input("请输入你的密码\n>  ")
-    login_new(account=account, password=password)
-
-
-
+    if isLogin():
+        print('已经登录')
+    else:
+        account = input('请输入你的邮箱\n>  ')
+        password = input("请输入你的密码\n>  ")
+        login_new(account=account, password=password)

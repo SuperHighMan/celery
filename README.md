@@ -72,8 +72,13 @@ $redis-cli
 
 2.celery启动后台worker
 ```
+前台启动
 ln -s /usr/local/python3/bin/celery /usr/bin/celery
 celery -A proj worker -l info -n worker.%h -Q celery
+
+后台启动
+celery multi start 1 -A proj -l info -c4 -Q celery --pidfile=/var/run/celery/%n.pid
+celery multi stop 1 -A proj -l info -c4 -Q celery --pidfile=/var/run/celery/%n.pid
 ```
 四、开发实例
 -----------------------------------

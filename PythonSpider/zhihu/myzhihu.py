@@ -98,8 +98,6 @@ def generate_captcha(str):
     input_points = '[' + ','.join(input_points) + ']'
     captcha = "{\"img_size\":" + img_size + ",\"input_points\":"+ input_points+"}"
     return captcha
-#print(get_xsrf())
-#get_captcha()
 
 #图片验证码登陆
 def login(account, password):
@@ -141,7 +139,7 @@ def isLogin():
 def login_new(account, password):
     _xsrf = get_xsrf()
     captcha = get_captcha()
-    print(captcha)
+    #print(captcha)
     email_url = 'https://www.zhihu.com/login/email'
     data = {
         'email': account,
@@ -150,7 +148,7 @@ def login_new(account, password):
         'captcha': captcha,
         'captcha_type': 'cn'
     }
-    print(data)
+    #print(data)
     headers['X-Xsrftoken'] = _xsrf
     headers['X-Requested-With'] = 'XMLHttpRequest'
     headers['Origin'] = 'https://www.zhihu.com'
@@ -167,6 +165,8 @@ def login_new(account, password):
 if __name__ == '__main__':
     if isLogin():
         print('已经登录')
+        response = session.get('https://www.zhihu.com/question/66489321', headers=headers)
+        print(response.text)
     else:
         account = input('请输入你的邮箱\n>  ')
         password = input("请输入你的密码\n>  ")

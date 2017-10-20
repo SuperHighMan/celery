@@ -1,11 +1,13 @@
-运用机器学习进行验证码识别
-=========
+#运用机器学习进行验证码识别
+
 前段时间学习了python的网络爬虫，在登录时，碰到了需要输入
 验证码的情况，在经过了简单的查询之后，准备运用libsvm的库
 进行机器学习，从而能够识别出简单的验证码。
 
-一、所需环境
----------------------------------------
+---
+
+##一、所需环境
+
 本代码实现环境如下：
 >1. Centos6.4 64位系统
 >2. Python3以及PIL库
@@ -21,20 +23,25 @@ cp svm.py svmutil.py /usr/local/python3/lib/python3.6
 cp ../libsvm.so.2 /usr/local/python3/lib/
 ```
 
-二、识别思路总结
----------------------------------------
+##二、识别思路总结
+
 >对于验证码进行降噪处理，对于规律的图片进行字符分割。
+
 >对分割后的图片进行人工分类，这是重要的一步，训练初期的数据就来源于你的归类信息
+
 >分割后的字符图片即已经实现了降低维度的处理，随后将图片信息向量化，生成svm的特征值
+
 >爬取验证码图片，生成svm的训练数据，然后运用libsvm生成训练的模型
+
 >准备测试数据，使用svm进行预测，查看预测的准确度
+
 >根据预测的准确度，来进行训练数据的增加，以此来提高机器学习的准确度
 
 ###1.图片预处理
 图片降噪，针对噪点，干扰线等简单的干扰，二值化后对黑点的周围进行一个个分析即可。
 原图初始如下：
 
-(https://github.com/SuperHighMan/celery/blob/master/PythonSpider/captcha/image/captcha_1.png)
+(https://github.com/SuperHighMan/celery/raw/master/PythonSpider/captcha/image/captcha_1.png)
 
 处理后图片如下：
 (https://github.com/SuperHighMan/celery/blob/master/PythonSpider/captcha/image/captcha_2.png)
@@ -77,17 +84,17 @@ label即为字符数字， index表示维度，value表示黑色点数
 检验，根据输出的准确率，丰富训练数据，优化模型，一步步的再进行测试。
 通过不断的周而复始的训练，让机器的识别率提高。
 
-三、后续的想法
-------------------------------------------------------------
+##三、后续的想法
+
 *1. 结合自动识别验证码，来对某些网站进行登录测试
 
 *2. CNN卷积神经网络学习运用 (解决验证码识别的一大利器)
 
 *3. TensorFlow的学习
 
-四、感谢
-------------------------------------------------------------
-参考资料
+##四、感谢
+
+##参考资料
 1. LIBSVM -- A Library for Support Vector Machines[http://www.csie.ntu.edu.tw/~cjlin/libsvm/](http://www.csie.ntu.edu.tw/~cjlin/libsvm/)
 2. 字符型图片验证码识别完整过程及Python实现 [http://www.cnblogs.com/beer/p/5672678.html](http://www.cnblogs.com/beer/p/5672678.html)
 

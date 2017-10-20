@@ -15,36 +15,24 @@ from PIL import Image
 from PIL import ImageEnhance
 import PIL.ImageOps
 import sys
+from cfg import CAPTCHA_URL, CRACK_PATH
+import os
 
-headers = {
-    "Accept":"*/*",
-    "Accept-Encoding":"gzip, deflate, sdch, br",
-    "Accept-Language":"zh-CN,zh;q=0.8",
-    "Connection":"keep-alive",
-    #"Host":"www.douban.com",
-    #'Referer': 'https://www.douban.com/',
-    "User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.98 Safari/537.36 LBBROWSER"
-}
-
-def test():
-    print('robot')
-
-def cal(a, b):
-    return a+b
-
-def download_captcha():
-    for i in range(20):
-        response = requests.get('https://accounts.douban.com/login', headers=headers)
-        soup = BeautifulSoup(response.text, 'lxml')
-        img_src = soup.find('img', {'id':'captcha_image'}).get('src')
-        print(img_src)
-        urlretrieve(img_src, 'image/'+str(uuid.uuid1())+'.jpg')
-        time.sleep(2)
-
+#下载网上的验证码，并保存为file名字的文件
+def download_captcha(URL, file):
+    '''
+    :param URL: 抓取的验证码URL
+    :param file: 验证码存储的文件名
+    :return: 返回图片存储的路径
+    '''
+    time.sleep(2)
+    image_path = os.path.join(CRACK_PATH, file)
+    urlretrieve(URL, image_path)
+    return image_path
 
 def download_tieta():
     for i in range(1000,2000):
-        image_src = 'http://180.153.49.130:9000/servlet/ValidateCodeServlet'
+        image_src = CAPTCHA_URL
         urlretrieve(image_src, 'image_tieta/'+str(i)+'.jpg')
         time.sleep(5)
         sys.stdout.write('\r')
@@ -61,9 +49,17 @@ def initTable(threshold=220):
             table.append(1)
     return table
 
-def image_to_binary():
-    for i in range(1000):
-        im = Image.open('image_tieta/'+str(i)+'.jpg')
+
+#预处理图片为二值图，降低图片的维度。
+#此步骤做完后，图片的预处理基本工作也已经完成
+#此处只是展示了一个简单的例子，关于验证码图片处理目前有了很好的方法，CNN卷积神经网络
+def image_to_binary(img_path):
+        '''
+        :param img_path: 验证码的路径
+        :return: 返回PIL.image
+        '''
+        im = Image.open(img_path)
+        #im = Image.open('image_tieta/'+str(i)+'.jpg')
         # 去除四周的边框
         box = (1,1,im.size[0]-1,im.size[1]-1)
         im = im.crop(box)
@@ -72,25 +68,15 @@ def image_to_binary():
         im = im.convert('L')            #灰度化
 
         im = im.point(initTable(), '1')  #二值化
-        '''
-        #测试用
-        for y in range(im.size[1]):
-            tmp = ''
-            for x in range(im.size[0]):
-                #print(im.getpixel((x,y)))
-                if im.getpixel((x,y)) == 0:
-                    tmp = tmp + ' '
-                else:
-                    tmp = tmp + ' ' + str(im.getpixel((x,y)))
-            print(tmp)
-        '''
+
         #去除噪点
         im = set_round(im)
         im = clear_noise(im)
         im = clear_line_noise(im)
-        im.save('image_deal/' + str(i) + '.jpg')
+        #im.save('image_deal/' + str(i) + '.jpg')
         #vcode = pytesseract.image_to_string(im)
         #print('%d.jpg: %s' %(i, vcode))
+        return im
 
 #对原图验证码的噪点做简单的处理，
 #此种方法其实属于歪门邪道，当验证码的字符颜色和噪点的颜色接近时，就失效；
@@ -148,6 +134,7 @@ def clear_noise(im):
 
     return im
 
+#消除干扰线
 def clear_line_noise(im):
     width, height = im.size
     for x in range(1, width-1):
@@ -191,12 +178,16 @@ def set_round(im):
     return im
 
 
-'''
+
 #再完成图片预处理之后，我们进行图片分割，将图片切割成单个字符的图片
 #这一步具有针对性，我选取的验证码比较常规，具有一定的切割规律可寻
 #若碰上歪斜的验证码，则本切割程序失效，应该另寻办法解决。
-'''
+
 def img_segment(img):
+    '''
+    :param img: PIL.Image
+    :return: PIL.Image
+    '''
     img_seg = []
     for i in range(4):
         x = 5 + i * (12 + 3)

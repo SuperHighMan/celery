@@ -1,4 +1,4 @@
-#运用机器学习进行验证码识别
+# 运用机器学习进行验证码识别
 
 前段时间学习了python的网络爬虫，在登录时，碰到了需要输入
 验证码的情况，在经过了简单的查询之后，准备运用libsvm的库
@@ -6,7 +6,7 @@
 
 ---
 
-##一、所需环境
+## 一、所需环境
 
 本代码实现环境如下：
 >1. Centos6.4 64位系统
@@ -23,7 +23,7 @@ cp svm.py svmutil.py /usr/local/python3/lib/python3.6
 cp ../libsvm.so.2 /usr/local/python3/lib/
 ```
 
-##二、识别思路总结
+## 二、识别思路总结
 
 >对于验证码进行降噪处理，对于规律的图片进行字符分割。
 
@@ -37,28 +37,31 @@ cp ../libsvm.so.2 /usr/local/python3/lib/
 
 >根据预测的准确度，来进行训练数据的增加，以此来提高机器学习的准确度
 
-###1.图片预处理
+### 1.图片预处理
 图片降噪，针对噪点，干扰线等简单的干扰，二值化后对黑点的周围进行一个个分析即可。
+
 原图初始如下：
 
 ![index](https://github.com/SuperHighMan/celery/raw/master/PythonSpider/captcha/image/captcha_1.png)
 
 处理后图片如下：
+
 ![index](https://github.com/SuperHighMan/celery/raw/master/PythonSpider/captcha/image/captcha_2.png)
 
 图片分割使用软件放大像素后，找出规律即可，如下例子：
 ![index](https://github.com/SuperHighMan/celery/raw/master/PythonSpider/captcha/image/captcha_3.png)
+
 此处我们分割出每个字符的间隔为3个像素。
 
 在完成了这一步之后，我们就有了一些验证码字符的样本，接下来需要将信息特征化。
 
-###2.图片字符分类
+### 2.图片字符分类
 针对分割好的图片，我们首先应对其进行分类，此处都选取了数字的验证码进行实验。
 
 最后我们会得到10个分完类的文件夹。0-9
 
 
-###3.特征化图片信息：
+### 3.特征化图片信息：
 libSVM的训练数据采用向量机的形式：
 格式信息如下：
 ```
@@ -79,12 +82,12 @@ label即为字符数字， index表示维度，value表示黑色点数
 
 最后我们可以从分完类的文件夹中生成训练数据。
 
-###4.svm模型训练及测试
+### 4.svm模型训练及测试
 使用libSVM库，我们可以很方便的对训练数据生成模型，随后准备测试数据，对模型进行
 检验，根据输出的准确率，丰富训练数据，优化模型，一步步的再进行测试。
 通过不断的周而复始的训练，让机器的识别率提高。
 
-##三、后续的想法
+## 三、后续的想法
 
 *1. 结合自动识别验证码，来对某些网站进行登录测试
 
@@ -92,9 +95,9 @@ label即为字符数字， index表示维度，value表示黑色点数
 
 *3. TensorFlow的学习
 
-##四、感谢
+## 四、感谢
 
-##参考资料
+### 参考资料
 1. LIBSVM -- A Library for Support Vector Machines[http://www.csie.ntu.edu.tw/~cjlin/libsvm/](http://www.csie.ntu.edu.tw/~cjlin/libsvm/)
 2. 字符型图片验证码识别完整过程及Python实现 [http://www.cnblogs.com/beer/p/5672678.html](http://www.cnblogs.com/beer/p/5672678.html)
 

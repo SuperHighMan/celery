@@ -87,6 +87,12 @@ label即为字符数字， index表示维度，value表示黑色点数
 检验，根据输出的准确率，丰富训练数据，优化模型，一步步的再进行测试。
 通过不断的周而复始的训练，让机器的识别率提高。
 
+我训练了大概1200张字符图，平均每个字符120张图片
+最后破解率非常高，几乎每张图片都能识别出验证码
+如下所示：
+
+![index](https://github.com/SuperHighMan/celery/raw/master/PythonSpider/captcha/image/captcha_4.png)
+
 ## 三、后续的想法
 
 *1. 结合自动识别验证码，来对某些网站进行登录测试

@@ -41,13 +41,13 @@ cp ../libsvm.so.2 /usr/local/python3/lib/
 图片降噪，针对噪点，干扰线等简单的干扰，二值化后对黑点的周围进行一个个分析即可。
 原图初始如下：
 
-(https://github.com/SuperHighMan/celery/raw/master/PythonSpider/captcha/image/captcha_1.png)
+![index](https://github.com/SuperHighMan/celery/raw/master/PythonSpider/captcha/image/captcha_1.png)
 
 处理后图片如下：
-(https://github.com/SuperHighMan/celery/blob/master/PythonSpider/captcha/image/captcha_2.png)
+![index](https://github.com/SuperHighMan/celery/raw/master/PythonSpider/captcha/image/captcha_2.png)
 
 图片分割使用软件放大像素后，找出规律即可，如下例子：
-(https://github.com/SuperHighMan/celery/blob/master/PythonSpider/captcha/image/captcha_3.png)
+![index](https://github.com/SuperHighMan/celery/raw/master/PythonSpider/captcha/image/captcha_3.png)
 此处我们分割出每个字符的间隔为3个像素。
 
 在完成了这一步之后，我们就有了一些验证码字符的样本，接下来需要将信息特征化。

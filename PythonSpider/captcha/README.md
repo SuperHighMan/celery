@@ -96,7 +96,7 @@ label即为字符数字， index表示维度，value表示黑色点数
 ## 三、后续的想法
 
 1. 结合自动识别验证码，来对某些网站进行登录测试
-2. [CNN卷积神经网络学习运用](https://github.com/SuperHighMan/celery/blob/master/PythonSpider/captcha/README.md)
+2. [CNN卷积神经网络学习运用](https://github.com/SuperHighMan/MachineLearning/blob/master/README.md)
 >目前正在使用keras库进行验证码的识别
 3. TensorFlow的学习
 

@@ -1,0 +1,10 @@
+/build
+/dist
+*.pyc
+*.jpg
+*.gif
+*.model
+*.tar
+*.gz
+*.txt
+*.png
